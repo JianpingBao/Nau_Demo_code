@@ -1,0 +1,43 @@
+import json
+from datetime import datetime
+import random
+
+def collect_data_from_sensors():
+    """
+    模拟从传感器收集数据
+    返回一个包含体温、心率和活动量的字典
+    """
+    # 模拟的数据，实际应用中应由传感器提供
+    data = {
+        "temperature": round(random.uniform(38.0, 39.2), 1), # 奶牛的正常体温范围
+        "heart_rate": random.randint(60, 90), # 奶牛的心率，单位：次/分钟
+        "activity_level": random.choice(["low", "medium", "high"]) # 活动量级别
+    }
+    return data
+
+def save_data_to_file(data):
+    """
+    将收集到的数据保存到文件中
+    """
+    filename = "cow_data.json"
+    with open(filename, "a") as file:
+        json.dump(data, file)
+        file.write("\n") # 为了更好地格式化，每条记录后换行
+
+def main():
+    """
+    主函数，模拟数据收集过程
+    """
+    # 收集数据
+    data = collect_data_from_sensors()
+    
+    # 为数据添加时间戳
+    data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    # 保存数据
+    save_data_to_file(data)
+    
+    print("Data collected and saved:", data)
+
+if __name__ == "__main__":
+    main()
