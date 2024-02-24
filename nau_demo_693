@@ -1,43 +1,53 @@
+# Json库作为轻量级的库，可以用来处理Json的数据，方便保存读取数据
 import json
+# datetime库可以获取日期时间，可以为收集到的数据进行时间标注
 from datetime import datetime
+# random可以生成模拟的传感器数据，体温，心率等。
 import random
 
+
+# 这个函数模拟从奶牛上的传感器收集数据
 def collect_data_from_sensors():
     """
-    模拟从传感器收集数据
-    返回一个包含体温、心率和活动量的字典
+    这一段是模拟从传感器收集的数据
+    返回一个包含体温、心率和活动量的数据
     """
     # 模拟的数据，实际应用中应由传感器提供
     data = {
-        "temperature": round(random.uniform(38.0, 39.2), 1), # 奶牛的正常体温范围
-        "heart_rate": random.randint(60, 90), # 奶牛的心率，单位：次/分钟
-        "activity_level": random.choice(["low", "medium", "high"]) # 活动量级别
+        "temperature": round(random.uniform(37.5, 39.0), 1),  # 奶牛的正常体温范围就在
+        "heart_rate": random.randint(60, 90),  # 奶牛的心率，单位：次/分钟
+        "activity_level": random.choice(["low", "medium", "high"])  # 活动量可以进一步分为低中高三个级别
     }
     return data
 
+
+# 以下这个函数将传入的数据保存到cow_data.json文件中，可以用"a"来打开文件，每次调用函数不会出现覆盖而是追加到文章的末尾。
 def save_data_to_file(data):
     """
     将收集到的数据保存到文件中
     """
     filename = "cow_data.json"
     with open(filename, "a") as file:
-        json.dump(data, file)
-        file.write("\n") # 为了更好地格式化，每条记录后换行
+        json.dump(data, file)  # 将data转换为Json格式并写入文件
+        file.write("\n")  # 添加换行符，方便以后记录都单独成行
 
+
+# main是脚本的入口点，首先调用collect_data_from_sensors函数收集数据，然后打上时间戳。格式如下，最后打印数据
 def main():
     """
     主函数，模拟数据收集过程
     """
     # 收集数据
     data = collect_data_from_sensors()
-    
-    # 为数据添加时间戳
+
+    # 为收集的数据打上一个具体包含年月日时分秒的时间戳
     data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
+
     # 保存数据
     save_data_to_file(data)
-    
+
     print("Data collected and saved:", data)
 
-if __name__ == "__main__":
+
+if __name__ == "__main__":  # 这行代码检查脚本是否作为主程序执行，如果是就调用'main'开始执行
     main()
