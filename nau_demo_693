@@ -31,6 +31,15 @@ def save_data_to_file(data):
         json.dump(data, file)  # 将data转换为Json格式并写入文件
         file.write("\n")  # 添加换行符，方便以后记录都单独成行
 
+# 添加alert_for_abnormal_data 函数
+def alert_for_abnormal_data(data):
+    """
+    检查数据，并在发现异常时触发警报
+    """
+    if data["temperature"] < 36.5 or data["temperature"] > 39.0:
+        print(f"警报: 体温异常 - 当前体温: {data['temperature']}")
+    if data["heart_rate"] < 60 or data["heart_rate"] > 90:
+        print(f"警报: 心率异常 - 当前心率: {data['heart_rate']}")
 
 # main是脚本的入口点，首先调用collect_data_from_sensors函数收集数据，然后打上时间戳。格式如下，最后打印数据
 def main():
@@ -43,11 +52,10 @@ def main():
     # 为收集的数据打上一个具体包含年月日时分秒的时间戳
     data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    # 检查数据并在需要时触发警报
+    alert_for_abnormal_data(data)
+
     # 保存数据
     save_data_to_file(data)
 
     print("Data collected and saved:", data)
-
-
-if __name__ == "__main__":  # 这行代码检查脚本是否作为主程序执行，如果是就调用'main'开始执行
-    main()
